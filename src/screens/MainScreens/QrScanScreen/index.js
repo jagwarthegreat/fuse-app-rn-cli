@@ -150,8 +150,11 @@ export default function QrScanScreen() {
               device={device}
               isActive={scanning}
               codeScanner={codeScanner}
-            >
-              <View style={modalStyles.cameraOverlay}>
+            />
+            
+            {/* Overlay on top of camera */}
+            <View style={modalStyles.cameraOverlay}>
+              <View style={modalStyles.topSection}>
                 <View style={modalStyles.header}>
                   <Text style={modalStyles.headerText}>Scan QR Code</Text>
                   <IconButton
@@ -162,9 +165,13 @@ export default function QrScanScreen() {
                     style={modalStyles.closeButton}
                   />
                 </View>
-                <View style={modalStyles.scannerFrame}>
-                  <View style={modalStyles.frameCorner} />
-                </View>
+              </View>
+              
+              <View style={modalStyles.scannerFrame}>
+                <View style={modalStyles.frameCorner} />
+              </View>
+              
+              <View style={modalStyles.bottomSection}>
                 <Text style={modalStyles.instructionText}>
                   Position the QR code within the frame
                 </Text>
@@ -178,7 +185,7 @@ export default function QrScanScreen() {
                   End Scanning
                 </Button>
               </View>
-            </Camera>
+            </View>
           </View>
         </Modal>
 
@@ -241,11 +248,15 @@ const modalStyles = StyleSheet.create({
     backgroundColor: '#000',
   },
   camera: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
   },
   cameraOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'transparent',
+    justifyContent: 'space-between',
+  },
+  topSection: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   header: {
     flexDirection: 'row',
@@ -262,6 +273,7 @@ const modalStyles = StyleSheet.create({
   },
   closeButton: {
     margin: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
   },
   scannerFrame: {
     flex: 1,
@@ -275,11 +287,15 @@ const modalStyles = StyleSheet.create({
     borderColor: '#fff',
     borderRadius: 12,
   },
+  bottomSection: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingTop: 20,
+  },
   instructionText: {
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
     paddingHorizontal: 20,
   },
   endScanButton: {
