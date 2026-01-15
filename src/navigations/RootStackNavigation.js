@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import MainStackNavigation from './MainStackNavigation';
 import LandingStackNavigation from './LandingStackNavigation';
@@ -12,7 +12,7 @@ const RootStackNavigation = () => {
   const userData = useSelector(state => state.user.userData);
   return (
 	<SafeAreaProvider>
-	  <NavigationContainer linking={linking}>
+	  <NavigationContainer linking={linking} theme={DefaultTheme}>
 	  	<AppProvider>
 		<StatusBar
           animated={true}

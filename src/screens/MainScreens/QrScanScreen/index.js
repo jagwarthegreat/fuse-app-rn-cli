@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { View, Alert, Platform } from 'react-native';
+import { View, Alert, Platform, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import { Camera, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import { Appbar, Button, PaperProvider, Text, TextInput } from 'react-native-paper';
+import { Appbar, Button, PaperProvider, Text, TextInput, IconButton } from 'react-native-paper';
 import styles from './style';
 
 export default function QrScanScreen() {
@@ -138,18 +138,49 @@ export default function QrScanScreen() {
           {/* <Appbar.Action icon={MORE_ICON} onPress={() => {}} color="#fff" /> */}
         </Appbar.Header>
 
-        {scanning && (
-          <Camera
-            style={styles.camera}
-            device={device}
-            isActive={scanning}
-            codeScanner={codeScanner}
-          >
-            <View style={styles.scannerOverlay}>
-              <Text style={styles.scannerText}>Scan QR Code</Text>
-            </View>
-          </Camera>
-        )}
+        {/* Camera Modal */}
+        <Modal
+          visible={scanning}
+          animationType="slide"
+          onRequestClose={stopScanning}
+        >
+          <View style={modalStyles.modalContainer}>
+            <Camera
+              style={modalStyles.camera}
+              device={device}
+              isActive={scanning}
+              codeScanner={codeScanner}
+            >
+              <View style={modalStyles.cameraOverlay}>
+                <View style={modalStyles.header}>
+                  <Text style={modalStyles.headerText}>Scan QR Code</Text>
+                  <IconButton
+                    icon="close"
+                    iconColor="#fff"
+                    size={30}
+                    onPress={stopScanning}
+                    style={modalStyles.closeButton}
+                  />
+                </View>
+                <View style={modalStyles.scannerFrame}>
+                  <View style={modalStyles.frameCorner} />
+                </View>
+                <Text style={modalStyles.instructionText}>
+                  Position the QR code within the frame
+                </Text>
+                <Button
+                  mode="contained"
+                  onPress={stopScanning}
+                  style={modalStyles.endScanButton}
+                  contentStyle={modalStyles.buttonContent}
+                  labelStyle={modalStyles.buttonLabel}
+                >
+                  End Scanning
+                </Button>
+              </View>
+            </Camera>
+          </View>
+        </Modal>
 
         <View style={styles.inboxContainer}>
         <Text variant="titleMedium" style={styles.titleText}>Manual Entry</Text>
@@ -204,4 +235,64 @@ export default function QrScanScreen() {
   );
 }
 
+const modalStyles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  camera: {
+    flex: 1,
+  },
+  cameraOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 50,
+    paddingBottom: 20,
+  },
+  headerText: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  closeButton: {
+    margin: 0,
+  },
+  scannerFrame: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  frameCorner: {
+    width: 250,
+    height: 250,
+    borderWidth: 3,
+    borderColor: '#fff',
+    borderRadius: 12,
+  },
+  instructionText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 30,
+    paddingHorizontal: 20,
+  },
+  endScanButton: {
+    backgroundColor: '#C8000D',
+    marginHorizontal: 20,
+    marginBottom: 50,
+  },
+  buttonContent: {
+    paddingVertical: 8,
+  },
+  buttonLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
 
