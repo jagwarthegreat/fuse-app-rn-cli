@@ -49,7 +49,7 @@ cd test
 npm run android
 ```
 
-Or clean and rebuild:
+Or clean and rebuild: s
 ```bash
 cd test/android
 ./gradlew clean
